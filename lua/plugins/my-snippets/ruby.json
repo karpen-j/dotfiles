@@ -1,0 +1,9 @@
+{
+  "String interpolation": {
+    "prefix": "ip",
+    "body": [
+      "#{${1}}${2}\""
+    ],
+    "description": "Insert interpolation variable"
+  }
+}
