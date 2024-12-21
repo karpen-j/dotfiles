@@ -1,9 +1,37 @@
 {
   "String interpolation": {
     "prefix": "ip",
-    "body": [
-      "#{${1}}${2}\""
-    ],
+    "body": ["#{${1}}${2}"],
     "description": "Insert interpolation variable"
+  },
+  "Method with cache": {
+    "prefix": "defc",
+    "body": ["def ${1:method_name}", "\t@$1 ||= ${2}", "end"]
+  },
+  "Class definition with initialize": {
+    "prefix": "cl init",
+    "body": [
+      "class ${1:ClassName} < BaseService",
+      "\tdef call",
+      "\tend",
+      "\t",
+      "private",
+      "\t",
+      "\tattr_reader :${2}",
+      "\t",
+      "\tdef initialize($2)",
+      "\t@$2 = $2",
+      "\t\t$0",
+      "\tend",
+      "end"
+    ]
+  },
+  "Rubocop disable comment": {
+    "prefix": "rd",
+    "body": ["# rubocop:disable "]
+  },
+  "Insert before block": {
+    "prefix": "bef",
+    "body": ["before do", "\t$0", "end"]
   }
 }

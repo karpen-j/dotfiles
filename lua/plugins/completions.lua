@@ -13,11 +13,15 @@ return {
     'hrsh7th/nvim-cmp',
     config = function()
       local cmp = require('cmp')
-      require('luasnip.loaders.from_vscode').lazy_load()
+      require('luasnip.loaders.from_vscode').lazy_load({
+        exclude = { 'bef' },
+      })
       require('luasnip').filetype_extend('ruby', { 'rails' })
       require('luasnip').filetype_extend('javascript', { 'html' })
       require('luasnip').filetype_extend('javascriptreact', { 'html' })
       require('luasnip.loaders.from_vscode').lazy_load({ paths = { '~/.config/nvim/lua/plugins/my-snippets' } })
+
+      local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
       cmp.setup({
         snippet = {
@@ -39,10 +43,21 @@ return {
         sources = cmp.config.sources({
           { name = 'nvim_lsp' },
           { name = 'luasnip' }, -- For luasnip users.
-        }, {
           { name = 'buffer' },
+          {
+            name = 'spell',
+            option = {
+              keep_all_entries = false,
+              enable_in_context = function()
+                return require('cmp.config.context').in_treesitter_capture('spell')
+              end,
+              preselect_correct_word = true,
+            },
+          },
         }),
       })
+
+      cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
       vim.keymap.set('i', '<C-k>', '<cmd>lua require("luasnip").expand_or_jump()<CR>')
       vim.keymap.set('i', '<C-j>', '<cmd>lua require("luasnip").jump(-1)<CR>')

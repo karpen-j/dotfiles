@@ -7,8 +7,6 @@ return {
     'MunifTanjim/nui.nvim',
   },
   config = function()
-    vim.keymap.set('n', '<C-n>', ':Neotree filesystem reveal left<CR>')
-    vim.keymap.set('n', '<leader>bf', ':Neotree buffers reveal float<CR>')
     local config = require('neo-tree')
     config.setup({
       close_if_last_window = true,
@@ -31,9 +29,12 @@ return {
       },
       default_component_configs = {
         indent = {
-          indent_size = 1,
+          indent_size = 2,
         },
       },
     })
+
+    vim.keymap.set('n', '<C-n>', ':Neotree filesystem reveal float<CR>')
+    vim.keymap.set('n', '<leader>bf', ':Neotree buffers reveal float<CR>')
   end,
 }
