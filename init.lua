@@ -11,6 +11,15 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+if vim.g.neovide then
+  vim.o.guifont = 'FiraMono Nerd Font Propo:h10'
+  vim.g.neovide_fullscreen = true
+
+  vim.keymap.set({ 'n', 'v', 's', 'x', 'o', 'i', 'l', 'c', 't' }, '<C-S-v>', function()
+    vim.api.nvim_paste(vim.fn.getreg('+'), true, -1)
+  end, { noremap = true, silent = true })
+end
+
 require('env')
 require('vim-options')
 require('lazy').setup('plugins')

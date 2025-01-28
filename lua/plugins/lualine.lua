@@ -27,6 +27,7 @@ return {
         },
         lualine_x = {
           require('yaml_nvim').get_yaml_key,
+          'rest',
         },
         lualine_y = { 'filetype' },
         lualine_z = { 'progress', 'location' },

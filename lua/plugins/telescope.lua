@@ -44,11 +44,21 @@ return {
       local builtin = require('telescope.builtin')
       local live_grep_args_shortcuts = require('telescope-live-grep-args.shortcuts')
 
-      vim.keymap.set('n', '<C-p>', builtin.find_files, {})
-      vim.keymap.set('n', '<leader>fg', ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
-      vim.keymap.set('n', '<leader>gc', live_grep_args_shortcuts.grep_word_under_cursor)
-      vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-      vim.keymap.set('n', '<leader><leader>', builtin.oldfiles, {})
+      vim.keymap.set('n', '<C-p>', builtin.find_files, { desc = 'Tele find files' })
+      vim.keymap.set(
+        'n',
+        '<leader>fg',
+        ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>",
+        { desc = 'Tele live grep' }
+      )
+      vim.keymap.set(
+        'n',
+        '<leader>gc',
+        live_grep_args_shortcuts.grep_word_under_cursor,
+        { desc = 'Tele grep current word' }
+      )
+      vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Tele buffers' })
+      vim.keymap.set('n', '<leader><leader>', builtin.oldfiles, { desc = 'Tele find old files' })
 
       require('telescope').load_extension('ui-select')
       require('telescope').load_extension('live_grep_args')

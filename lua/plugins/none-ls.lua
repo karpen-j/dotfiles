@@ -22,8 +22,8 @@ return {
 
     vim.keymap.set('n', '<leader>gf', function()
       vim.lsp.buf.format({ timeout_ms = 10000 })
-    end)
-    vim.keymap.set('n', ']g', '<cmd>lua vim.diagnostic.goto_next()<CR>zz')
-    vim.keymap.set('n', '[g', '<cmd>lua vim.diagnostic.goto_prev()<CR>zz')
+    end, { desc = 'Formatting run' })
+    vim.keymap.set('n', ']g', '<cmd>lua vim.diagnostic.goto_next()<CR>zz', { desc = 'Diagnostics go to next' })
+    vim.keymap.set('n', '[g', '<cmd>lua vim.diagnostic.goto_prev()<CR>zz', { desc = 'Diagnostics go to prev' })
   end,
 }

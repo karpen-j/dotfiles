@@ -47,16 +47,20 @@ vim.opt.wrap           = true
 
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
-vim.keymap.set('n', '<leader>T', ':lua RunRSpecOnCurrentLine(0)<CR>')
-vim.keymap.set('n', '<leader>bp', 'obinding.pry<Esc>')
-vim.keymap.set('n', '<leader>cc', ':let @+=expand("%:.")<CR>')
-vim.keymap.set('n', '<leader>cs', ':lua CamelToSnakeWord()<CR>')
-vim.keymap.set('n', '<leader>h', ':nohlsearch<CR>')
-vim.keymap.set('n', '<leader>s', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
-vim.keymap.set('n', '<leader>sc', ':lua SnakeToCamelWord()<CR>')
-vim.keymap.set('n', '<leader>t', ':lua RunRSpecOnCurrentLine(vim.fn.line("."))<CR>')
+vim.keymap.set('n', '<leader>T', ':lua RunRSpecOnCurrentLine(0)<CR>', { desc = 'Run rspec on whole file' })
+vim.keymap.set('n', '<leader>bp', 'obinding.pry<Esc>', { desc = 'Paste binding.pry' })
+vim.keymap.set('n', '<leader>cc', ':let @+=expand("%:.")<CR>', { desc = 'Copy filepath to clipboard' })
+vim.keymap.set('n', '<leader>cs', ':lua CamelToSnakeWord()<CR>', { desc = 'Change current word to snake case' })
+vim.keymap.set('n', '<leader>h', ':nohlsearch<CR>', { desc = 'Turn off highlighing' })
+vim.keymap.set('n', '<leader>sc', ':lua SnakeToCamelWord()<CR>', { desc = 'Change current word to camel case' })
+vim.keymap.set(
+  'n',
+  '<leader>t',
+  ':lua RunRSpecOnCurrentLine(vim.fn.line("."))<CR>',
+  { desc = 'Run rspec on current line' }
+)
 vim.keymap.set('n', 'J', 'mzJ`z')
 vim.keymap.set('n', 'N', 'Nzzzv')
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
-vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]])
+vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = 'Delete without pasting it to clipboard' })

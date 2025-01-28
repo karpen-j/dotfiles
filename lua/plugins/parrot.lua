@@ -13,12 +13,24 @@ return {
       providers = {
         anthropic = {
           api_key = os.getenv('ANTHROPIC_API_KEY'),
+          params = {
+            chat = { max_tokens = 6144 },
+            command = { max_tokens = 6144 },
+          },
         },
         gemini = {
           api_key = os.getenv('GEMINI_API_KEY'),
+          params = {
+            chat = { max_tokens = 6144 },
+            command = { max_tokens = 6144 },
+          },
         },
         openai = {
           api_key = os.getenv('OPENAI_API_KEY'),
+          params = {
+            chat = { max_tokens = 6144 },
+            command = { max_tokens = 6144 },
+          },
         },
       },
       system_prompt = {
@@ -36,10 +48,29 @@ return {
       cmd_prefix = 'Prt',
       chat_conceal_model_params = false,
       user_input_ui = 'buffer',
-      toggle_target = 'buffer',
+      toggle_target = 'tabnew',
       online_model_selection = true,
       command_auto_select_response = true,
       hooks = {
+        RewriteMultiContext = function(prt, params)
+          local template = [[
+            I have the following code from {{filename}} and other related files:
+
+            ```{{filetype}}
+            {{multifilecontent}}
+            ```
+
+            Please look at the following section specifically:
+            ```{{filetype}}
+            {{selection}}
+            ```
+
+            Please rewrite this according to the contained instructions.
+            Rewrite the selected code above. Respond just with the snippet of code that should replace the selection.
+          ]]
+          local model_obj = prt.get_model('command')
+          prt.Prompt(params, prt.ui.Target.rewrite, model_obj, nil, template)
+        end,
         CompleteMultiContext = function(prt, params)
           local template = [[
             I have the following code from {{filename}} and other realted files:
@@ -106,7 +137,7 @@ return {
           local model_obj = prt.get_model('command')
           prt.Prompt(params, prt.ui.Target.new, model_obj, nil, template)
         end,
-        UnitTestsFullContext = function(prt, params)
+        UnitTestsMultiContext = function(prt, params)
           local template = [[
             I have the following code from {{filename}} and other realted files:
 
@@ -138,10 +169,10 @@ return {
           prt.Prompt(params, prt.ui.Target.enew, model_obj, nil, template)
         end,
       },
-      vim.keymap.set({ 'n', 'v', 'x' }, '<leader>ct', ":'<,'>PrtChatToggle<CR>"),
-      vim.keymap.set('n', '<leader>cr', ':PrtChatRespond<CR>'),
-      vim.keymap.set('v', '<leader>aa', ":'<,'>PrtRewrite<CR>"),
-      vim.keymap.set('n', '<leader>at', ':UnitTestsFullContext<CR>'),
+      vim.keymap.set({ 'n', 'v', 'x' }, '<leader>ct', ":'<,'>PrtChatToggle<CR>", { desc = 'Prt chat toggle' }),
+      vim.keymap.set('n', '<leader>cr', ':PrtChatRespond<CR>', { desc = 'Prt chat response' }),
+      vim.keymap.set('v', '<leader>aa', ":'<,'>RewriteMultiContext<CR>", { desc = 'Prt rewrite multicontext' }),
+      vim.keymap.set('n', '<leader>at', ':UnitTestsMultiContext<CR>', { desc = 'Prt unit test multicontext' }),
     })
   end,
 }

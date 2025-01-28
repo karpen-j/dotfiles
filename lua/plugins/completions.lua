@@ -59,10 +59,10 @@ return {
 
       cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
-      vim.keymap.set('i', '<C-k>', '<cmd>lua require("luasnip").expand_or_jump()<CR>')
-      vim.keymap.set('i', '<C-j>', '<cmd>lua require("luasnip").jump(-1)<CR>')
-      vim.keymap.set('s', '<C-k>', '<cmd>lua require("luasnip").expand_or_jump()<CR>')
-      vim.keymap.set('s', '<C-j>', '<cmd>lua require("luasnip").jump(-1)<CR>')
+      vim.keymap.set('i', '<C-k>', '<cmd>lua require("luasnip").expand_or_jump()<CR>', { desc = 'Cmp exapnd or jump' })
+      vim.keymap.set('i', '<C-j>', '<cmd>lua require("luasnip").jump(-1)<CR>', { desc = 'Cmp jump -1' })
+      vim.keymap.set('s', '<C-k>', '<cmd>lua require("luasnip").expand_or_jump()<CR>', { desc = 'Cmp exapnd or jump' })
+      vim.keymap.set('s', '<C-j>', '<cmd>lua require("luasnip").jump(-1)<CR>', { desc = 'Cmp jump -1' })
     end,
   },
 }
