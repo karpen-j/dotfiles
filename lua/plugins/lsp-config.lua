@@ -57,6 +57,33 @@ return {
       vim.keymap.set('n', '<leader>gr', '<cmd>Telescope lsp_references<CR>', { desc = 'Find references' })
       vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code action' })
       vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename symbol' })
+
+      local function copy_hover_to_clipboard()
+        local params = vim.lsp.util.make_position_params()
+        vim.lsp.buf_request(0, 'textDocument/hover', params, function(err, result, _, _)
+          if err or not result or not result.contents then
+            return
+          end
+
+          local content
+          if type(result.contents) == 'string' then
+            content = result.contents
+          elseif result.contents.value then
+            content = result.contents.value
+          else
+            content = result.contents[1].value
+          end
+
+          -- Remove Markdown formatting if present
+          content = content:gsub('```%w*\n', ''):gsub('```', '')
+
+          -- Copy to clipboard
+          vim.fn.setreg('+', content)
+          print('Hover documentation copied to clipboard!')
+        end)
+      end
+
+      vim.keymap.set('n', '<leader>ch', copy_hover_to_clipboard, { desc = 'Copy hover documentation to clipboard' })
     end,
   },
 }

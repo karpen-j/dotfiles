@@ -75,7 +75,6 @@ return {
     version = '*',
     config = function()
       require('mini.surround').setup({
-        search_method = 'cover_or_next',
         custom_surroundings = {
           ['d'] = { output = { left = 'do\n', right = '\nend' } },
           ['n'] = { output = { left = '\n', right = '\n' } },

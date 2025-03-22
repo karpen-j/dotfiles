@@ -1,7 +1,11 @@
 return {
   'frankroeder/parrot.nvim',
   event = 'VeryLazy',
-  dependencies = { 'nvim-lua/plenary.nvim', 'rcarriga/nvim-notify' },
+  dependencies = {
+    'nvim-lua/plenary.nvim',
+    'rcarriga/nvim-notify',
+    'nvim-telescope/telescope.nvim',
+  },
   lazy = false,
   config = function()
     require('notify').setup({
@@ -152,6 +156,8 @@ return {
 
             Respond by writing unit tests for the code above. Use style from betterspecs if filetype is ruby.
             Use russian language for description of contexts. Do not explain. Do not use markdown.
+            Use instance_double instead of receive_message_chain. Use have_received instead of receive.
+            Create instances of models via factory_bot instead of mock them.
           ]]
           local model_obj = prt.get_model('command')
           prt.Prompt(params, prt.ui.Target.enew, model_obj, nil, template)
@@ -173,6 +179,7 @@ return {
       vim.keymap.set('n', '<leader>cr', ':PrtChatRespond<CR>', { desc = 'Prt chat response' }),
       vim.keymap.set('v', '<leader>aa', ":'<,'>RewriteMultiContext<CR>", { desc = 'Prt rewrite multicontext' }),
       vim.keymap.set('n', '<leader>at', ':UnitTestsMultiContext<CR>', { desc = 'Prt unit test multicontext' }),
+      vim.keymap.set('n', '<leader>fc', ':PrtChatFinder<CR>', { desc = 'Tele find parrot chats' }),
     })
   end,
 }

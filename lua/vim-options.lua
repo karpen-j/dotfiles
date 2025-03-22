@@ -27,6 +27,11 @@ function RunRSpecOnCurrentLine(line_number)
   vim.api.nvim_chan_send(vim.b.terminal_job_id, rspec_command)
 end
 
+function CreateFileWithDirs(filepath)
+  vim.fn.system('install -D /dev/null ' .. filepath)
+  vim.cmd('write! ' .. filepath)
+end
+
 vim.g.mapleader = ' '
 
 vim.opt.autoindent     = true
@@ -42,7 +47,7 @@ vim.opt.spelllang      = { 'en_us', 'ru' }
 vim.opt.swapfile       = false
 vim.opt.tabstop        = 2
 vim.opt.textwidth      = 116
-vim.opt.updatetime     = 50
+vim.opt.updatetime     = 200
 vim.opt.wrap           = true
 
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
@@ -63,4 +68,9 @@ vim.keymap.set('n', 'J', 'mzJ`z')
 vim.keymap.set('n', 'N', 'Nzzzv')
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+vim.keymap.set('v', '<leader>ft', "! tr -s \" \" | column -t -s '|' -o '|'<CR>", { desc = 'Format markdown table' })
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = 'Delete without pasting it to clipboard' })
+
+vim.api.nvim_create_user_command('Touch', function(opts)
+  CreateFileWithDirs(opts.args)
+end, { nargs = 1 })

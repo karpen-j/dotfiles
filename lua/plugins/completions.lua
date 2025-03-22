@@ -10,7 +10,11 @@ return {
     },
   },
   {
+    'lukas-reineke/cmp-rg',
+  },
+  {
     'hrsh7th/nvim-cmp',
+    event = { 'InsertEnter', 'CmdlineEnter' },
     config = function()
       local cmp = require('cmp')
       require('luasnip.loaders.from_vscode').lazy_load({
@@ -34,27 +38,37 @@ return {
           documentation = cmp.config.window.bordered(),
         },
         mapping = cmp.mapping.preset.insert({
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<C-e>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }),
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            -- This little snippet will confirm with tab, and if no entry is selected, will confirm the first item
+            if cmp.visible() then
+              local entry = cmp.get_selected_entry()
+              if not entry then
+                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+              end
+              cmp.confirm()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+          ['<A-y>'] = require('minuet').make_cmp_map(),
         }),
-        sources = cmp.config.sources({
+        sources = {
           { name = 'nvim_lsp' },
+          { name = 'minuet' },
           { name = 'luasnip' }, -- For luasnip users.
-          { name = 'buffer' },
           {
-            name = 'spell',
-            option = {
-              keep_all_entries = false,
-              enable_in_context = function()
-                return require('cmp.config.context').in_treesitter_capture('spell')
-              end,
-              preselect_correct_word = true,
-            },
+            name = 'rg',
+            -- Try it when you feel cmp performance is poor
+            keyword_length = 3,
           },
-        }),
+        },
+        performance = {
+          -- It is recommended to increase the timeout duration due to
+          -- the typically slower response speed of LLMs compared to
+          -- other completion sources. This is not needed when you only
+          -- need manual completion.
+          fetching_timeout = 2000,
+        },
       })
 
       cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())

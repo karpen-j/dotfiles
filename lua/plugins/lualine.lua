@@ -19,6 +19,7 @@ return {
             end,
           },
         },
+        lualine_b = { 'lsp_status', 'branch', 'diff', 'diagnostics' },
         lualine_c = {
           {
             'filename',
@@ -30,7 +31,7 @@ return {
           'rest',
         },
         lualine_y = { 'filetype' },
-        lualine_z = { 'progress', 'location' },
+        lualine_z = { 'location' },
       },
     })
   end,

@@ -36,5 +36,14 @@ return {
 
     vim.keymap.set('n', '<C-n>', ':Neotree filesystem reveal float<CR>', { desc = 'Neotree filesystem reveal' })
     vim.keymap.set('n', '<leader>bf', ':Neotree buffers reveal float<CR>', { desc = 'Neotree buffers reveal' })
+
+    vim.api.nvim_create_autocmd('BufEnter', {
+      pattern = 'neo-tree *', -- matches neo-tree buffers
+      callback = function()
+        if vim.bo.filetype == 'neo-tree' then
+          vim.wo.number = true
+        end
+      end,
+    })
   end,
 }
